@@ -10,7 +10,7 @@ Determiná que será impreso en la consola, sin ejecutar el código.
 ```javascript
 x = 1;
 var a = 5;
-var b = 10;
+var b = 10;    
 var c = function(a, b, c) {
   var x = 10;
   console.log(x);
@@ -18,8 +18,8 @@ var c = function(a, b, c) {
   var f = function(a, b, c) {
     b = a;
     console.log(b);
-    b = c;
-    var x = 5;
+    b = c; 
+    var x = 5; 
   }
   f(a,b,c);
   console.log(b);
@@ -27,6 +27,17 @@ var c = function(a, b, c) {
 c(8,9,10);
 console.log(b);
 console.log(x);
+/*
+
+10
+8
+8
+9
+10
+1
+
+*/
+
 ```
 
 ```javascript
@@ -35,7 +46,16 @@ console.log(baz);
 foo();
 function foo() { console.log('Hola!'); }
 var bar = 1;
-baz = 2;
+baz = 2; // Si es global, por qué no la reconoce en el console.log?
+
+/*
+
+"Hola!"
+undefined
+undefined
+
+
+*/
 ```
 
 ```javascript
@@ -44,6 +64,12 @@ if(true) {
     var instructor = "Franco";
 }
 console.log(instructor);
+
+/*
+
+Franco (Sí se pisa!)
+
+*/
 ```
 
 ```javascript
@@ -56,6 +82,14 @@ console.log(instructor);
    }
 })();
 console.log(instructor);
+
+/*
+
+Tony
+Franco
+Tony
+
+*/
 ```
 
 ```javascript
@@ -69,28 +103,39 @@ if (true) {
 }
 console.log(instructor);
 console.log(pm);
+
+/*
+
+The Flash
+Reverse Flash
+The Flash
+Franco // al ser let, el cambio a Reverse Flash queda en el bloque del if
+
+*/
+
 ```
 ### Coerción de Datos
 
 ¿Cuál crees que será el resultado de la ejecución de estas operaciones?:
 
 ```javascript
-6 / "3"
-"2" * "3"
-4 + 5 + "px"
-"$" + 4 + 5
-"4" - 2
-"4px" - 2
-7 / 0
-{}[0]
-parseInt("09")
-5 && 2
-2 && 5
-5 || 0
-0 || 5
-[3]+[3]-[10]
-3>2>1
-[] == ![]
+6 / "3" // 2
+"2" * "3" // 6
+4 + 5 + "px" // "9px" Primero se suma y luego se concatena
+"$" + 4 + 5 //"$45" se concatena, no se suma
+"4" - 2 // 2 
+"4px" - 2 // NaN
+7 / 0 // infinity
+{}[0] // [0]
+parseInt("09") //9
+5 && 2 // 2
+2 && 5 // 5
+5 || 0 // 5
+0 || 5 // 5 Toma el valor mayor, no la ubicación?
+
+[3]+[3]-[10] // [-4] ki? cómo 23?
+3>2>1 // false ???
+[] == ![] // false ??? es true
 ```
 
 > Si te quedó alguna duda repasá con [este artículo](http://javascript.info/tutorial/object-conversion).
@@ -110,6 +155,7 @@ function test() {
       return 2;
    }
 }
+//undefined - 2
 
 test();
 ```
@@ -126,6 +172,8 @@ function getFood(food) {
     }
     return snack;
 }
+// Por qué no después de tomar nota de la existencia de la variable global Snack, no vuelve a buscar su valor? 
+// Por qué no busca el valor de snack en el outer enviroment?
 
 getFood(false);
 ```
@@ -147,9 +195,9 @@ var obj = {
    }
 };
 
-console.log(obj.prop.getFullname());
+console.log(obj.prop.getFullname()); // Aurelio - Está invocando inmediatamente. Por lo cual apunta al ámbito de ejecución de esa función, es decir a obj.prop
 
-var test = obj.prop.getFullname;
+var test = obj.prop.getFullname; // Juan Perez - Al guardarse en una var global, lo que llama es al método en obj.prop, pero a donde apunta es por fuera del objeto. Apunta al scope global. 
 
 console.log(test());
 ```
@@ -165,6 +213,8 @@ function printing() {
    setTimeout(function() { console.log(3); }, 0);
    console.log(4);
 }
+
+// 1 - 4 - 3 - 2
 
 printing();
 ```
