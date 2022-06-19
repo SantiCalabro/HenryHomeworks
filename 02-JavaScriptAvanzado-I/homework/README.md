@@ -46,13 +46,13 @@ console.log(baz);
 foo();
 function foo() { console.log('Hola!'); }
 var bar = 1;
-baz = 2; // Si es global, por qué no la reconoce en el console.log?
+baz = 2; // No tiene Hoisting porque no está declarada. Entonces pasa desapercibida cuando hace esa primera recorrida y anota las variables. 
+//var bar = 1 sí tiene hoisting, entonces la capta. Pero cuando llea a "baz" no sabe quién es, entonces da error y ahí se termina el código. Nunca llega a ejecutar la función foo() 
 
 /*
 
-"Hola!"
-undefined
-undefined
+1
+error
 
 
 */
@@ -121,21 +121,21 @@ Franco // al ser let, el cambio a Reverse Flash queda en el bloque del if
 ```javascript
 6 / "3" // 2
 "2" * "3" // 6
-4 + 5 + "px" // "9px" Primero se suma y luego se concatena
-"$" + 4 + 5 //"$45" se concatena, no se suma
+4 + 5 + "px" // "9px" Primero se suma y luego se concatena - Siempre de izq a der.
+"$" + 4 + 5 //"$45" se concatena, no se suma - Siempre de izq a der.
 "4" - 2 // 2 
 "4px" - 2 // NaN
 7 / 0 // infinity
 {}[0] // [0]
 parseInt("09") //9
-5 && 2 // 2
-2 && 5 // 5
-5 || 0 // 5
-0 || 5 // 5 Toma el valor mayor, no la ubicación?
+5 && 2 // 2 - los dos deben ser true. El primero lo es, el segundo DEFINE
+2 && 5 // 5 - idem arriba
+5 || 0 // 5 - primer número es true. El otro ni lo miro (por más que no sea 0)
+0 || 5 // 5 - el 0 es false. Lo que define es el 5
 
-[3]+[3]-[10] // [-4] ki? cómo 23?
-3>2>1 // false ???
-[] == ![] // false ??? es true
+[3]+[3]-[10] // 23 -- [3]+[3] = "33" - [10] = 23 (coerción a número)
+3>2>1 // false 3>2 es true --> true > 1 = false. Operaciones se resuelven de a una
+[] == ![] // true (porque no es igualación estricta)
 ```
 
 > Si te quedó alguna duda repasá con [este artículo](http://javascript.info/tutorial/object-conversion).
@@ -155,7 +155,9 @@ function test() {
       return 2;
    }
 }
-//undefined - 2
+//undefined  -- Sabe quién es "a" porque tomó nota. 
+//              Pero ejecutó antes de acceder al valor
+// 2
 
 test();
 ```
@@ -172,8 +174,8 @@ function getFood(food) {
     }
     return snack;
 }
-// Por qué no después de tomar nota de la existencia de la variable global Snack, no vuelve a buscar su valor? 
-// Por qué no busca el valor de snack en el outer enviroment?
+// Como sabe que la var snack SÍ está en su contexto, no la va a buscar afuera. 
+// Pero como food no era true, nunca pasó a levantar el valor.
 
 getFood(false);
 ```
