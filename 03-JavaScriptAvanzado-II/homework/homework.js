@@ -19,8 +19,11 @@ function counter() {
 
   var sum = 1
   return function count(){
+ 
     return sum ++
   }
+
+ 
 
 }
 
