@@ -62,7 +62,7 @@ function cacheFunction(cb) {
   var obj = {}
   return function (arg){
     if(!obj.hasOwnProperty(arg)){
-      obj[arg]=cb(arg)
+      obj[arg]=cb(arg)//retorna el resultado de callback según su argumento, xej una multiplicación
     }
     return obj[arg]
   }
