@@ -1,9 +1,57 @@
-'use strict'
+"use strict";
 
 /*
 Definir las funciones recursivas nFactorial y nFibonacci.
 
-nFactorial(n) debe retornar el factorial de n sabiendo que, siendo n un número natural, su factorial (representado como n!) es el producto de n por todos los números naturales menores que él y mayores a 0. Ejemplo: 5! = 5 * 4 * 3 * 2 * 1
+nFactorial(n) debe retornar el factorial de n sabiendo que, siendo n un número natural, su factorial (representado como 
+  n!) es el producto de n por todos los números naturales menores que él y mayores a 0. Ejemplo: 5! = 5 * 4 * 3 * 2 * 1
+*/
+function nFactorial(n) {
+  if (n === 0) return 1;
+  while (n > 0) {
+    return (n = n * nFactorial(n - 1));
+  }
+}
+
+function nFibonacci(n) {
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+
+  while (n > 1) {
+    return (n = nFibonacci(n - 2) + nFibonacci(n - 1));
+  }
+}
+
+function Queue() {
+  this.queue = [];
+  this.size = () => {
+    return this.queue.length;
+  };
+
+  this.enqueue = (val) => {
+    return this.queue.push(val);
+  };
+
+  this.dequeue = () => {
+    if (this.size == 0) return undefined;
+    return this.queue.shift();
+  };
+}
+
+/*
+
+Queue.prototype.enqueue = function (val) {
+  return this.queue.push(val);
+};
+Queue.prototype.dequeue = function () {
+  if (this.queue.length == 0) return undefined;
+  return this.queue.shift();
+};
+Queue.prototype.size = function () {
+  return this.queue.length();
+};
+
+
 
 nFibonacci(n) debe retornar el enésimo número de la secuencia de Fibonacci, 
 tomando al 0 y al 1, respectivamente, como primer y segundo elementos de la misma, 
@@ -21,24 +69,6 @@ Secuencia:  0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
 Como ejercicio adicional y completamente opcional, al terminar de resolver este problema pueden intentar definir funciones que logren los mismos resultados pero de manera iterativa.
 */
 
-function nFactorial(n) {
-  if(n > -1 && n < 2) return 1
-  else if (n<0) return 0
-
-  return n* nFactorial(n-1)
-}
-//                  10
-function nFibonacci(n) {
-  if(n<0) return 0
-  if(n === 1) return 1
-  
-
-  return nFibonacci(n-1) + nFibonacci(n-2)
-
-
-
-}
-
 /*
 Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde 
 el primer elemento que ingresa es el primero que se quita. Definir los siguientes 
@@ -51,28 +81,11 @@ métodos:
 Pueden utilizar class o función constructora.
 */
 
-function Queue() {
-this.queue = [];
-
-Queue.prototype.enqueue=function(value){
-  return this.queue.unshift(value) //por qué unshift y no push?
-}
-
-Queue.prototype.dequeue=function(){
-  if(this.queue.length ==0) return undefined
-  return this.queue.pop() //por qué pop si eso borra al último de la fila?
-}
-Queue.prototype.size=function(){
-  return this.queue.length
-}
-
-}
-
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
 module.exports = {
   Queue,
   nFactorial,
-  nFibonacci
+  nFibonacci,
 };
