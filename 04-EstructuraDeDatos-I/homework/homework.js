@@ -7,10 +7,10 @@ nFactorial(n) debe retornar el factorial de n sabiendo que, siendo n un número 
   n!) es el producto de n por todos los números naturales menores que él y mayores a 0. Ejemplo: 5! = 5 * 4 * 3 * 2 * 1
 */
 function nFactorial(n) {
+  if (n < 0) throw new Error("No pueden ser números negativos");
   if (n === 0) return 1;
-  while (n > 0) {
-    return (n = n * nFactorial(n - 1));
-  }
+
+  return (n = n * nFactorial(n - 1));
 }
 
 function nFibonacci(n) {
@@ -24,22 +24,19 @@ function nFibonacci(n) {
 
 function Queue() {
   this.queue = [];
-  this.size = () => {
-    return this.queue.length;
-  };
+  //   this.size = () => {
+  //     return this.queue.length;
+  //   };
 
-  this.enqueue = (val) => {
-    return this.queue.push(val);
-  };
+  //   this.enqueue = (val) => {
+  //     return this.queue.push(val);
+  //   };
 
-  this.dequeue = () => {
-    if (this.size == 0) return undefined;
-    return this.queue.shift();
-  };
+  //   this.dequeue = () => {
+  //     if (this.size == 0) return undefined;
+  //     return this.queue.shift();
+  //   };
 }
-
-/*
-
 Queue.prototype.enqueue = function (val) {
   return this.queue.push(val);
 };
@@ -48,8 +45,12 @@ Queue.prototype.dequeue = function () {
   return this.queue.shift();
 };
 Queue.prototype.size = function () {
-  return this.queue.length();
+  return this.queue.length;
 };
+
+/*
+
+
 
 
 

@@ -3,7 +3,8 @@
 /*
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
-  - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular de una lista de un solo nodo y de una lista vacía);
+  - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular de una lista 
+    de un solo nodo y de una lista vacía);
   - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: el parámetro puede ser un valor 
   o un callback. En el primer caso, buscamos un nodo cuyo valor coincida con lo buscado; en el segundo, 
   buscamos un nodo cuyo valor, al ser pasado como parámetro del callback, retorne true. 
@@ -22,63 +23,56 @@ function LinkedList() {
 function Node(value) {
   this.value = value;
   this.next = null;
- }
+}
 
-LinkedList.prototype.add = function(value){
+LinkedList.prototype.add = function (value) {
   var node = new Node(value);
   var current = this.head;
-  
-  if(!current){
-    this.head = node;
-    this._length++
-    return node
-  }
-  
-  while(current.next){
-  current = current.next
-  }
-  
-  current.next = node
-  this._length++
-  return node
-}
-LinkedList.prototype.remove = function(){
-  var stored = null;
-  var current = this.head;
-  
-  if(!current) return undefined;
-  if(!current.next){
-    stored = current.value;
-     this.head = null;
-     this._length--
-     return stored
+
+  if (!current) {
+    this.head = node; //por qué acá no se puede usar current????
+    return node;
   }
 
-  while(current.next.next){
-    current = current.next
-  };
+  while (current.next) {
+    current = current.next;
+  }
+  current.next = node;
+  return node;
+};
+
+LinkedList.prototype.remove = function () {
+  var current = this.head;
+  var stored;
+
+  if (!current) return null;
+  if (!current.next) {
+    stored = current.value;
+    this.head = null; //por qué acá no se puede usar current???? --- PORQUE NO BORRO EL PUNTERO!
+    return stored;
+  }
+  while (current.next.next) {
+    current = current.next;
+  }
   stored = current.next.value;
   current.next = null;
-  this._length--
-  return stored
-  
 
- }
- LinkedList.prototype.search = function(val){
+  return stored;
+};
+
+LinkedList.prototype.search = function (arg) {
   var current = this.head;
 
-  while(current){
-  if ( typeof val == "function"){
-    if(val(current.value)) return current.value
-    }else if(current.value === val){
-    return current.value
-  } 
-   current = current.next;
+  while (current) {
+    if (typeof arg == "function") {
+      if (arg(current.value)) return current.value;
+    } else {
+      if (arg == current.value) return current.value;
+    }
+    current = current.next;
   }
- }
-
-
-
+  return null;
+};
 
 /*
 Implementar la clase HashTable.
@@ -96,31 +90,45 @@ Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero
 */
 
 function HashTable() {
-  this.numBuckets = 35
-  this.buckets = []
+  this.buckets = [];
+  this.numBuckets = 35;
 }
 
-HashTable.prototype.hash = function(word){
-  var sum=0;
-  
-for(var i=0; i<word.length; i++){
- return sum += word.charCodeAt(0)
-}
+// - hash: función hasheadora que determina en qué bucket se almacenará un dato. Recibe un input alfabético, suma el código numérico de cada caracter del input (investigar el método charCodeAt de los strings) y calcula el módulo de ese número total por la cantidad de buckets; de esta manera determina la posición de la tabla en la que se almacenará el dato.
 
-return sum % this.numBuckets
+HashTable.prototype.hash = function (input) {
+  var sum = 0;
+  for (var i = 0; i < input.length; i++) {
+    sum += input.charCodeAt(i);
+  }
+  return sum % this.numBuckets;
+};
 
-}
+//- get: recibe una clave por parámetro, y busca el valor que le corresponde en el bucket correcto de la tabla.
 
-HashTable.prototype.set = function(){
+HashTable.prototype.get = function (key) {
+  var index = this.hash(key); //retorna un index
 
-}
-HashTable.prototype.get = function(){
+  return this.buckets[index][key];
+};
 
-}
-HashTable.prototype.hasKey = function(){
+// - set: recibe el conjunto clave valor (como dos parámetros distintos), hashea la clave invocando al método hash, y almacena todo el conjunto en el bucket correcto.
 
-}
+HashTable.prototype.set = function (key, value) {
+  let index = this.hash(key);
+  if (typeof key !== "string") {
+    throw new TypeError("Keys must be strings");
+  }
 
+  if (!this.buckets[index]) this.buckets[index] = {};
+  this.buckets[index][key] = value;
+};
+// - hasKey: recibe una clave por parámetro y consulta si ya hay algo almacenado en la tabla con esa clave (retorna un booleano).
+
+HashTable.prototype.hasKey = function (key) {
+  var index = this.hash(key);
+  return this.buckets[index].hasOwnProperty(key);
+};
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
